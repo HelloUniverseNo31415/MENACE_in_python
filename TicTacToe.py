@@ -18,7 +18,7 @@ def weightedPick(dic):
         if pick < tmp:
             return key
 
-class TicTacToe:
+class tic_tac_toe:
     
     def resetBoard(self): 
         self.game = numpy.array([[0,0,0],[0,0,0],[0,0,0]])        
@@ -89,7 +89,7 @@ class TicTacToe:
         a = numpy.where(self.game == 0)
         return (a[0]*3)+ a[1] 
     
-class Player:
+class comp_player:
     def __init__(self, training, strategyFile = ""):
         self.gameHistory = {}
         self.noLoseStreak = 0
@@ -109,7 +109,9 @@ class Player:
             pickle.dump(self.strategy, output, pickle.HIGHEST_PROTOCOL)
     
     def makeMove(self, gameState, possibleMoves):
-        # check if the state isnt in strategy or its all 0s
+        # check if the state isnt in strategy or its all 0s, sets to balanced, 
+        # original MENACE would have a give up feature for all 0s but it 
+        # might be bad luck 
         if (gameState not in self.strategy or \
                                    allEqualTo(self.strategy[gameState], 0)):
             self.strategy[gameState] = dict.fromkeys(possibleMoves, 5)
@@ -158,7 +160,7 @@ class Player:
 
 # valifate each input
 # nicer words
-class HumanPlayer():
+class human_player():
     def __init__(self, d=False):
         
         if d:
@@ -175,7 +177,7 @@ class HumanPlayer():
         print self.name + '! New Game Starting!'
     
     def makeMove(self, gameState, possibleMoves):
-        print gameState.replace("U", self.identity).replace("O", self.opponent)
+        print gameState.replace("O", self.opponent).replace("U", self.identity)
         #maybe make game return normal Board for a human player - but then 
         # would have to calculate wins and losses seperately
         print str(self.name) + ' ,your moves are ' + str(possibleMoves)       
@@ -185,31 +187,34 @@ class HumanPlayer():
     def setResult(self, result):
         print result
         
-class RandomPlayer():       
+class random_player():       
     def startNewGame(self):
-        pass;
+        return;
     
     def makeMove(self, gameState, possibleMoves):
         return numpy.random.choice(possibleMoves)
     
     def setResult(self, result):
-        pass;
+        return;
 
 #==============================================================================        
 
-# only trains the player in being second
+# only trains the player in being first
 def getTrained(numTrials ,playerToTrain=None):
     if (playerToTrain == None):
-        playerToTrain = Player(True)
-    a = Player(True)
-    b = RandomPlayer()
-    game1 = TicTacToe()
-    game2 = TicTacToe()
-    game1.setPlayers(a, playerToTrain)
-    game2.setPlayers(b, playerToTrain) 
+        playerToTrain = comp_player(True)
+    a = comp_player(True)
+    b = random_player()
+    game1 = tic_tac_toe()
+    game2 = tic_tac_toe()
+    game3 = tic_tac_toe()
+    game1.setPlayers(playerToTrain, a)
+    game2.setPlayers(playerToTrain, b)
+    game3.setPlayers(a,b)
 
     for i in range(numTrials):
         game1.playGame()
         game2.playGame()
+        game3.playGame()
    
     return playerToTrain
