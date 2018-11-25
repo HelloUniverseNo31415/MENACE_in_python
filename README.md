@@ -13,7 +13,7 @@ machine makes random moves and based on the result the probabilities are modifie
 theoretically could learn to play any turn based game, maybe with some tweaking of parameters.
 
 ### Why Python?
-Im not a CS student so don't know many languages...yet
+Im not a CS student so don't know many languages...yet, which is also why I'm probably not following best practice...yet
 
 ### Why not train against a perfect machine?
 Since TicTacToe is solved, a perfect machine will never win, and therefore the trainer.
